@@ -56,6 +56,11 @@ class HtmlExtendedExtension extends AbstractExtension
     private $htmlExtension;
 
     /**
+     * @var string[]
+     */
+    private static $htmlIds = [];
+
+    /**
      * Inits this extension
      *
      * @param MimeTypes|null $mimeTypes
@@ -156,8 +161,31 @@ class HtmlExtendedExtension extends AbstractExtension
                     'html_styles',
                     [$this, 'htmlStyles']
                 ),
+                new TwigFunction(
+                    'html_id',
+                    [$this, 'htmlId']
+                ),
             )
         );
+    }
+
+    /**
+     * Generates an random, unique HTML ID.
+     *
+     * @param string $prefix
+     * @return string
+     */
+    public function htmlId(string $prefix = 'html'): string
+    {
+        // Generate a random html ID
+        do {
+            $id = $prefix . '-' . mt_rand(0, 5);
+        } while (in_array($id, self::$htmlIds, true));
+
+        // Cache generated ID
+        self::$htmlIds[] = $id;
+
+        return $id;
     }
 
     /**
