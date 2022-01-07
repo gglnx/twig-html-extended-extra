@@ -296,13 +296,11 @@ class HtmlExtendedExtension extends AbstractExtension
 
         if (is_bool($value) && $value) {
             return $name;
-        } elseif (is_string($value)) {
-            $value = twig_escape_filter($env, $value);
-
-            return "{$name}=\"{$value}\"";
         }
 
-        return '';
+        $value = twig_escape_filter($env, (string) $value);
+
+        return "{$name}=\"{$value}\"";
     }
 
     /**
