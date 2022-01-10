@@ -283,7 +283,7 @@ class HtmlExtendedExtension extends AbstractExtension
 
                 return implode(' ', $attributes);
             } elseif ($name === 'class' && !empty($value)) {
-                $value = twig_html_classes($value);
+                $value = trim(twig_html_classes($value));
             } elseif ($name === 'style' && !empty($value)) {
                 $value = $this->htmlStyles($value);
             } else {

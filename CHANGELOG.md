@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Trim combined classes
+
 ## [0.2.1] - 2022-01-07
 
 * Always convert value to a string in `html_attribute`
