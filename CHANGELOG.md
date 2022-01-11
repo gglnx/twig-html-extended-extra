@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2022-01-11
+
 * Return Twig\Markup for html modifying filters
 
 ## [0.2.4] - 2022-01-11
@@ -42,7 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adds `paragraphize` filter
 * Adds `strip_control_characters` filter
 
-[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.3.0
 [0.2.4]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.2.4
 [0.2.3]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.2.3
 [0.2.2]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.2.2
