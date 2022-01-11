@@ -278,7 +278,11 @@ class HtmlExtendedExtension extends AbstractExtension
                 $attributes = [];
 
                 foreach ($value as $n => $v) {
-                    $attributes[] = $this->htmlAttribute($env, "{$name}-{$n}", $v);
+                    $attribute = $this->htmlAttribute($env, "{$name}-{$n}", $v);
+
+                    if (!empty($attribute)) {
+                        $attributes[] = $attribute;
+                    }
                 }
 
                 return implode(' ', $attributes);
@@ -300,7 +304,13 @@ class HtmlExtendedExtension extends AbstractExtension
 
         $value = twig_escape_filter($env, (string) $value);
 
-        return "{$name}=\"{$value}\"";
+        if ($value !== null) {
+            $value = twig_escape_filter($env, (string) $value);
+
+            return "{$name}=\"{$value}\"";
+        }
+
+        return '';
     }
 
     /**
