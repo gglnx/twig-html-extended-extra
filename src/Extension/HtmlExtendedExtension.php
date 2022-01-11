@@ -14,6 +14,7 @@ use Twig\Environment;
 use Twig\Error\RuntimeError;
 use Twig\Extension\AbstractExtension;
 use Twig\Extra\Html\HtmlExtension;
+use Twig\Markup;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -351,9 +352,9 @@ class HtmlExtendedExtension extends AbstractExtension
      *
      * @param string $text Input text
      * @param bool $nl2br Convert single new lines into <br>
-     * @return string
+     * @return Markup
      */
-    public function paragraphize(string $text, bool $nl2br = true): string
+    public function paragraphize(string $text, bool $nl2br = true): Markup
     {
         $text = strip_tags($text);
         $text = trim($text);
@@ -376,7 +377,7 @@ class HtmlExtendedExtension extends AbstractExtension
 
         $text = preg_replace('~\s\s+~', ' ', $text);
 
-        return $text;
+        return new Markup($text, 'UTF-8');
     }
 
     /**
@@ -387,9 +388,9 @@ class HtmlExtendedExtension extends AbstractExtension
      *
      * @param string $text Input text
      * @param bool $stripSlashes Enable striping of slashes.
-     * @return string HTML-formatted string
+     * @return Markup HTML-formatted string
      */
-    public function breakerize(string $text, bool $stripSlashes = true): string
+    public function breakerize(string $text, bool $stripSlashes = true): Markup
     {
         // Convert || into <br>
         $text = preg_replace('/(?<!\\\)\|\|/', '<br>', $text);
@@ -402,7 +403,7 @@ class HtmlExtendedExtension extends AbstractExtension
             $text = stripcslashes($text);
         }
 
-        return $text;
+        return new Markup($text, 'UTF-8');
     }
 
     /**
@@ -413,7 +414,7 @@ class HtmlExtendedExtension extends AbstractExtension
      * @param bool $stripSlashes Enable striping of slashes.
      * @param string $tag HTML tag for highlighting
      * @param null|string $className Class name for highlight tag
-     * @return string HTML-formatted string
+     * @return Markup HTML-formatted string
      */
     public function highlight(
         Environment $env,
@@ -421,7 +422,7 @@ class HtmlExtendedExtension extends AbstractExtension
         bool $stripSlashes = true,
         string $tag = 'em',
         ?string $className = null
-    ): string {
+    ): Markup {
         // Highlight text
         $replacement = $this->htmlTag($env, $tag, '$2', ['class' => $className]);
         $text = preg_replace('/((?<!\\\)\*\*)(.*?)((?<!\\\)\*\*)/', $replacement, $text);
@@ -431,7 +432,7 @@ class HtmlExtendedExtension extends AbstractExtension
             $text = stripcslashes($text);
         }
 
-        return $text;
+        return new Markup($text, 'UTF-8');
     }
 
     /**
@@ -462,7 +463,7 @@ class HtmlExtendedExtension extends AbstractExtension
      * @param int $length Length of the output
      * @param string $tag HTML tag for highlighting
      * @param null|string $className Class name for highlight tag
-     * @return string
+     * @return Markup
      */
     public function contextualize(
         Environment $env,
@@ -471,7 +472,7 @@ class HtmlExtendedExtension extends AbstractExtension
         int $length = 250,
         string $tag = 'em',
         ?string $className = null
-    ): string {
+    ): Markup {
         $text = strip_tags($text);
         $pattern = '/(' . preg_quote($term) . ')/im';
         $midway = round($length / 2);
@@ -491,7 +492,7 @@ class HtmlExtendedExtension extends AbstractExtension
         $replacement = $this->htmlTag($env, $tag, '$1', ['class' => $className]);
         $text = preg_replace($pattern, $replacement, $text);
 
-        return $text;
+        return new Markup($text, 'UTF-8');
     }
 
     /**

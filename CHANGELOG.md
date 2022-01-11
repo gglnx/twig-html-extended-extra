@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Return Twig\Markup for html modifying filters
+
 ## [0.2.4] - 2022-01-11
 
 * Fix double escape in `html_attribute`
