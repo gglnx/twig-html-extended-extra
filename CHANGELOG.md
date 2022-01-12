@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fix broken randomness in `html_id`, also using a fixed format (`[prefix]-[five digits]-[five digits]`)
+
 ## [0.3.0] - 2022-01-11
 
 * Return Twig\Markup for html modifying filters

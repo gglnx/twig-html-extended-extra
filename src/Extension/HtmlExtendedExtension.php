@@ -171,7 +171,7 @@ class HtmlExtendedExtension extends AbstractExtension
     }
 
     /**
-     * Generates an random, unique HTML ID.
+     * Generates an random, unique HTML ID (prefix-XXXXX-XXXXX).
      *
      * @param string $prefix
      * @return string
@@ -180,7 +180,12 @@ class HtmlExtendedExtension extends AbstractExtension
     {
         // Generate a random html ID
         do {
-            $id = $prefix . '-' . mt_rand(0, 5);
+            $id = sprintf(
+                '%s-%d-%d',
+                $prefix,
+                mt_rand(10000, 99999),
+                mt_rand(10000, 99999)
+            );
         } while (in_array($id, self::$htmlIds, true));
 
         // Cache generated ID
