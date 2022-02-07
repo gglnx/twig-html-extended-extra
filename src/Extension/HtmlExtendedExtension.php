@@ -120,6 +120,15 @@ class HtmlExtendedExtension extends AbstractExtension
                         'needs_environment' => true,
                     ]
                 ),
+                new TwigFilter(
+                    'wrap_text',
+                    [$this, 'wrapText'],
+                    [
+                        'pre_escape' => 'html',
+                        'is_safe' => ['html'],
+                        'needs_environment' => true,
+                    ]
+                ),
             )
         );
     }
@@ -428,9 +437,33 @@ class HtmlExtendedExtension extends AbstractExtension
         string $tag = 'em',
         ?string $className = null
     ): Markup {
-        // Highlight text
+        return $this->wrapText($env, $text, '**', $stripSlashes, $tag, $className);
+    }
+
+    /**
+     * Wraps text using a control sequence.
+     *
+     * @param Environment $env Current Twig environment
+     * @param string $text Input text
+     * @param string $controlSequence Control sequence
+     * @param bool $stripSlashes Enable striping of slashes.
+     * @param string $tag HTML tag for highlighting
+     * @param null|string $className Class name for highlight tag
+     * @return Markup HTML-formatted string
+     */
+    public function wrapText(
+        Environment $env,
+        string $text,
+        string $controlSequence,
+        bool $stripSlashes = true,
+        string $tag = 'em',
+        ?string $className = null
+    ): Markup {
+        // Wraps text
+        $controlSequence = preg_quote($controlSequence, '/');
+        $regex = "/((?<!\\\){$controlSequence})(.*?)((?<!\\\){$controlSequence})/";
         $replacement = $this->htmlTag($env, $tag, '$2', ['class' => $className]);
-        $text = preg_replace('/((?<!\\\)\*\*)(.*?)((?<!\\\)\*\*)/', $replacement, $text);
+        $text = preg_replace($regex, $replacement, $text);
 
         // Remove slashes
         if ($stripSlashes) {
@@ -444,12 +477,21 @@ class HtmlExtendedExtension extends AbstractExtension
      * Strips all format control characters from a string.
      *
      * @param string $text
+     * @param string[] $controlSequences
      * @return string
      */
-    public function stripControlCharacters(string $text): string
-    {
-        // Remove * and | from string
-        $text = preg_replace('/((?<!\\\)\*\*)(.*?)((?<!\\\)\*\*)/', '$2', $text);
+    public function stripControlCharacters(
+        string $text,
+        array $controlSequences = ['**']
+    ): string {
+        // Remove wrap text markers
+        foreach ($controlSequences as $controlSequence) {
+            $controlSequence = preg_quote($controlSequence, '/');
+            $regex = "/((?<!\\\){$controlSequence})(.*?)((?<!\\\){$controlSequence})/";
+            $text = preg_replace($regex, '$2', $text);
+        }
+
+        // Remove soft and hard breaks
         $text = preg_replace('/(?<!\\\)\|\|/', ' ', $text);
         $text = preg_replace('/(?<!\\\)\|/', '', $text);
 
