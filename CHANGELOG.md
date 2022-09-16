@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0-beta.0] - 2022-09-16
+
+* **Better merging of html attributes**: With this change `attributes` now supports all attributes with space-separated tokes (like class or rel). Multiple values will be merged, values with null will be ignored and values with false remove all previous ones.
+* **Breaking Change**: This extension doesn't include anymore all filters and functions from `twig/html-extra`. Please load `HtmlExtension` directly.
+
 ## [0.4.0] - 2022-02-07
 
 * New: `wrap_text` for using custom control sequences.
@@ -49,7 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adds `paragraphize` filter
 * Adds `strip_control_characters` filter
 
-[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.0-beta.0...HEAD
+[0.5.0-beta.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.0
 [0.4.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.4.0
 [0.3.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.3.0
 [0.2.4]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.2.4
