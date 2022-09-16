@@ -9,11 +9,9 @@
 
 namespace Gglnx\TwigHtmlExtendedExtra\Extension;
 
-use Symfony\Component\Mime\MimeTypes;
 use Twig\Environment;
 use Twig\Error\RuntimeError;
 use Twig\Extension\AbstractExtension;
-use Twig\Extra\Html\HtmlExtension;
 use Twig\Markup;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -83,85 +81,64 @@ class HtmlExtendedExtension extends AbstractExtension
     ];
 
     /**
-     * @var HtmlExtension
-     */
-    private $htmlExtension;
-
-    /**
      * @var string[]
      */
     private static $htmlIds = [];
-
-    /**
-     * Inits this extension
-     *
-     * @param MimeTypes|null $mimeTypes
-     * @return void
-     */
-    public function __construct(MimeTypes $mimeTypes = null)
-    {
-        $this->htmlExtension = new HtmlExtension($mimeTypes);
-    }
 
     /**
      * @inheritdoc
      */
     public function getFilters()
     {
-        $baseFilters = $this->htmlExtension->getFilters();
-
-        return array_merge(
-            $baseFilters,
-            array(
-                new TwigFilter(
-                    'strip_control_characters',
-                    [$this, 'stripControlCharacters']
-                ),
-                new TwigFilter(
-                    'paragraphize',
-                    [$this, 'paragraphize'],
-                    [
-                        'pre_escape' => 'html',
-                        'is_safe' => ['html'],
-                    ]
-                ),
-                new TwigFilter(
-                    'contextualize',
-                    [$this, 'contextualize'],
-                    [
-                        'pre_escape' => 'html',
-                        'is_safe' => ['html'],
-                        'needs_environment' => true,
-                    ]
-                ),
-                new TwigFilter(
-                    'breakerize',
-                    [$this, 'breakerize'],
-                    [
-                        'pre_escape' => 'html',
-                        'is_safe' => ['html'],
-                    ]
-                ),
-                new TwigFilter(
-                    'highlight',
-                    [$this, 'highlight'],
-                    [
-                        'pre_escape' => 'html',
-                        'is_safe' => ['html'],
-                        'needs_environment' => true,
-                    ]
-                ),
-                new TwigFilter(
-                    'wrap_text',
-                    [$this, 'wrapText'],
-                    [
-                        'pre_escape' => 'html',
-                        'is_safe' => ['html'],
-                        'needs_environment' => true,
-                    ]
-                ),
-            )
-        );
+        return [
+            new TwigFilter(
+                'strip_control_characters',
+                [$this, 'stripControlCharacters']
+            ),
+            new TwigFilter(
+                'paragraphize',
+                [$this, 'paragraphize'],
+                [
+                    'pre_escape' => 'html',
+                    'is_safe' => ['html'],
+                ]
+            ),
+            new TwigFilter(
+                'contextualize',
+                [$this, 'contextualize'],
+                [
+                    'pre_escape' => 'html',
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+            new TwigFilter(
+                'breakerize',
+                [$this, 'breakerize'],
+                [
+                    'pre_escape' => 'html',
+                    'is_safe' => ['html'],
+                ]
+            ),
+            new TwigFilter(
+                'highlight',
+                [$this, 'highlight'],
+                [
+                    'pre_escape' => 'html',
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+            new TwigFilter(
+                'wrap_text',
+                [$this, 'wrapText'],
+                [
+                    'pre_escape' => 'html',
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+        ];
     }
 
     /**
@@ -169,45 +146,40 @@ class HtmlExtendedExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        $baseFunctions = $this->htmlExtension->getFunctions();
-
-        return array_merge(
-            $baseFunctions,
-            array(
-                new TwigFunction(
-                    'html_attributes',
-                    [$this, 'htmlAttributes'],
-                    [
-                        'is_safe' => ['html'],
-                        'needs_environment' => true,
-                    ]
-                ),
-                new TwigFunction(
-                    'html_attribute',
-                    [$this, 'htmlAttribute'],
-                    [
-                        'is_safe' => ['html'],
-                        'needs_environment' => true,
-                    ]
-                ),
-                new TwigFunction(
-                    'html_tag',
-                    [$this, 'htmlTag'],
-                    [
-                        'is_safe' => ['html'],
-                        'needs_environment' => true,
-                    ]
-                ),
-                new TwigFunction(
-                    'html_styles',
-                    [$this, 'htmlStyles']
-                ),
-                new TwigFunction(
-                    'html_id',
-                    [$this, 'htmlId']
-                ),
-            )
-        );
+        return [
+            new TwigFunction(
+                'html_attributes',
+                [$this, 'htmlAttributes'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+            new TwigFunction(
+                'html_attribute',
+                [$this, 'htmlAttribute'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+            new TwigFunction(
+                'html_tag',
+                [$this, 'htmlTag'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+            new TwigFunction(
+                'html_styles',
+                [$this, 'htmlStyles']
+            ),
+            new TwigFunction(
+                'html_id',
+                [$this, 'htmlId']
+            ),
+        ];
     }
 
     /**
