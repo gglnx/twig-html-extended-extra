@@ -41,6 +41,37 @@ class HtmlExtendedExtension extends AbstractExtension
     public $emptyAttributes = ['value', 'alt'];
 
     /**
+     * Attributes which contain space separated tokes
+     *
+     * @see https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+     * @var string[]
+     */
+    public $attributesWithSpaceSeparatedTokens = [
+        'accesskey',
+        'accept-charset',
+        'autocomplete',
+        'blocking',
+        'class',
+        'for',
+        'headers',
+        'itemprop',
+        'itemref',
+        'itemtype',
+        'ping',
+        'rel',
+        'sandbox',
+        'sizes',
+        'aria-controls',
+        'aria-described-by',
+        'aria-drop-effect',
+        'aria-flow-to',
+        'aria-labelled-by',
+        'aria-owns',
+        'aria-role-description',
+        'aria-role-description',
+    ];
+
+    /**
      * HTML attributes which don't have content.
      *
      * @see https://html.spec.whatwg.org/multipage/syntax.html#void-elements
@@ -242,30 +273,8 @@ class HtmlExtendedExtension extends AbstractExtension
             return is_array($value) && count($value) > 0;
         });
 
-        // Merge into one attribute array
-        $attributes = array_reduce($attributes, function ($carry, $item) {
-            // Split class names
-            if (isset($item['class'])) {
-                if (is_string($item['class'])) {
-                    $item['class'] = explode(' ', $item['class']);
-                }
-
-                if (is_array($item['class']) && array_is_list($item['class'])) {
-                    $item['class'] = array_fill_keys($item['class'], true);
-                }
-            }
-
-            return $this->mergeArray($carry, $item);
-        }, []);
-
-        // Remove empty values
-        $attributes = array_filter($attributes, function ($value, $key) {
-            if (in_array($key, $this->emptyAttributes)) {
-                return $value === '' || !empty($value);
-            }
-
-            return !empty($value);
-        }, ARRAY_FILTER_USE_BOTH);
+        // Merge into all attribute arrays into one
+        $attributes = $this->mergeAttributes(...$attributes);
 
         // Render attributes as HTML
         $html = [];
@@ -301,7 +310,7 @@ class HtmlExtendedExtension extends AbstractExtension
                 }
 
                 return implode(' ', $attributes);
-            } elseif ($name === 'class' && !empty($value)) {
+            } elseif (in_array($name, $this->attributesWithSpaceSeparatedTokens) && !empty($value)) {
                 $value = trim(twig_html_classes($value));
             } elseif ($name === 'style' && !empty($value)) {
                 $value = $this->htmlStyles($value);
@@ -543,31 +552,47 @@ class HtmlExtendedExtension extends AbstractExtension
     }
 
     /**
-     * Merges two or more arrays into one recursively
+     * Merges two or more arrays with attributes recursively into one
      *
      * @param array $arrays
      * @return array
      */
-    private function mergeArray(...$arrays)
+    private function mergeAttributes(...$arrays)
     {
-        $baseArray = array_shift($arrays);
+        $attributes = [];
 
         while (!empty($arrays)) {
             foreach (array_shift($arrays) as $k => $v) {
-                if (is_int($k)) {
-                    if (array_key_exists($k, $baseArray)) {
-                        $baseArray[] = $v;
-                    } else {
-                        $baseArray[$k] = $v;
+                if (in_array($k, $this->attributesWithSpaceSeparatedTokens)) {
+                    if (is_string($v)) {
+                        $v = array_values(array_filter(explode(' ', $v)));
                     }
-                } elseif (is_array($v) && isset($baseArray[$k]) && is_array($baseArray[$k])) {
-                    $baseArray[$k] = $this->mergeArray($baseArray[$k], $v);
-                } else {
-                    $baseArray[$k] = $v;
+
+                    if (is_array($v) && array_is_list($v)) {
+                        $v = array_fill_keys($v, true);
+                    }
+                }
+
+                if ($v === false) {
+                    if (array_key_exists($k, $attributes)) {
+                        unset($attributes[$k]);
+                    }
+                } elseif (is_int($k)) {
+                    if (array_key_exists($k, $attributes)) {
+                        $attributes[] = $v;
+                    } else {
+                        $attributes[$k] = $v;
+                    }
+                } elseif (is_array($v) && isset($attributes[$k]) && is_array($attributes[$k])) {
+                    $attributes[$k] = $this->mergeAttributes($attributes[$k], $v);
+                } elseif (in_array($k, $this->emptyAttributes) && is_string($v)) {
+                    $attributes[$k] = $v;
+                } elseif (!empty($v)) {
+                    $attributes[$k] = $v;
                 }
             }
         }
 
-        return $baseArray;
+        return $attributes;
     }
 }
