@@ -517,8 +517,10 @@ class HtmlExtendedExtension extends AbstractExtension
             }
         }
 
-        $replacement = $this->htmlTag($env, $tag, '$1', ['class' => $className]);
-        $text = preg_replace($pattern, $replacement, $text);
+        if (!empty($term)) {
+            $replacement = $this->htmlTag($env, $tag, '$1', ['class' => $className]);
+            $text = preg_replace($pattern, $replacement, $text);
+        }
 
         return new Markup($text, 'UTF-8');
     }
