@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0-beta.2] - 2023-06-12
+
+* Move most functions into global namespace
+
 ## [0.5.0-beta.1] - 2023-03-16
 
 * Fix `|contextualize` with empty term
@@ -58,7 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adds `paragraphize` filter
 * Adds `strip_control_characters` filter
 
-[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.0-beta.1...HEAD
+[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.0-beta.2...HEAD
+[0.5.0-beta.2]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.2
 [0.5.0-beta.1]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.1
 [0.5.0-beta.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.0
 [0.4.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.4.0
