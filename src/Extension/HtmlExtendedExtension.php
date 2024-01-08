@@ -3,7 +3,7 @@
 /**
  * Twig HTML Extended Extra
  *
- * @copyright 2022 Dennis Morhardt <info@dennismorhardt.de>
+ * @copyright 2024 Dennis Morhardt <info@dennismorhardt.de>
  * @license MIT License; see LICENSE file for details.
  */
 
@@ -147,8 +147,6 @@ namespace Gglnx\TwigHtmlExtendedExtra\Extension {
 
             return $id;
         }
-
-
 
         /**
          * Converts double new lines into paragraphs

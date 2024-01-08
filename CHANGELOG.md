@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2024-01-08
+
 * Fix: Don’t use deprecated syntax
 
 ## [0.5.0-beta.2] - 2023-06-12
@@ -64,7 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adds `paragraphize` filter
 * Adds `strip_control_characters` filter
 
-[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.0-beta.2...HEAD
+[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0
 [0.5.0-beta.2]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.2
 [0.5.0-beta.1]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.1
 [0.5.0-beta.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.0
