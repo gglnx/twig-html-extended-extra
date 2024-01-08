@@ -552,7 +552,7 @@ namespace {
 
         if (!in_array($name, $voidElement)) {
             $content = twig_escape_filter($env, $content, 'html');
-            $html .= ">${content}</{$name}>";
+            $html .= ">{$content}</{$name}>";
         } else {
             $html .= ">";
         }

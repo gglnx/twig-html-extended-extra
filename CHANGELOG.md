@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fix: Don’t use deprecated syntax
+
 ## [0.5.0-beta.2] - 2023-06-12
 
 * Move most functions into global namespace
