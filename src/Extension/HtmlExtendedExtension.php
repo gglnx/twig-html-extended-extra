@@ -338,6 +338,44 @@ namespace {
     use Twig\Error\RuntimeError;
 
     /**
+     * Returns all HTML attributes which can be boolean
+     *
+     * @private
+     * @return string[]
+     */
+    function twig_html_extended_attributes_boolean(): array
+    {
+        // see https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+        return [
+            'allowfullscreen',
+            'async',
+            'autofocus',
+            'autoplay',
+            'checked',
+            'controls',
+            'default',
+            'defer',
+            'disabled',
+            'formnovalidate',
+            'inert',
+            'ismap',
+            'itemscope',
+            'loop',
+            'multiple',
+            'muted',
+            'nomodule',
+            'novalidate',
+            'open',
+            'playsinline',
+            'readonly',
+            'required',
+            'reversed',
+            'selected',
+            'shadowrootdelegatesfocus',
+        ];
+    }
+
+    /**
      * Returns all HTML attributes with tokens inside
      *
      * @private
@@ -433,8 +471,12 @@ namespace {
             }
         }
 
-        if (is_bool($value) && $value) {
-            return $name;
+        if (in_array($name, twig_html_extended_attributes_boolean())) {
+            return $value ? $name : '';
+        }
+
+        if (is_bool($value)) {
+            return $value ? $name : '';
         }
 
         if ($value !== null) {

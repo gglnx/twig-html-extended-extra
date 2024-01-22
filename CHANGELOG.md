@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fix: Don’t render attributes if value is strict false
+
 ## [0.5.0] - 2024-01-08
 
 * Fix: Don’t use deprecated syntax
