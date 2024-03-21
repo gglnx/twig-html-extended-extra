@@ -308,7 +308,7 @@ namespace Gglnx\TwigHtmlExtendedExtra\Extension {
             ?string $className = null
         ): Markup {
             $text = strip_tags($text);
-            $pattern = '/(' . preg_quote($term) . ')/im';
+            $pattern = '/(' . preg_quote($term, '/') . ')/im';
             $midway = round($length / 2);
 
             if (strlen($text) > $length) {

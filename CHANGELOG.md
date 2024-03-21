@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fix: Escape delimiter
+
 ## [0.5.1] - 2024-01-22
 
 * Fix: Don’t render attributes if value is strict false
