@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.2] - 2024-03-21
+
 * Fix: Escape delimiter
 
 ## [0.5.1] - 2024-01-22
@@ -72,7 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adds `paragraphize` filter
 * Adds `strip_control_characters` filter
 
-[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.5.2...HEAD
+[0.5.2]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.2
 [0.5.1]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.1
 [0.5.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0
 [0.5.0-beta.2]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.0-beta.2
