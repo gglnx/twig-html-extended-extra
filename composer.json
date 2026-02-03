@@ -4,7 +4,7 @@
   "type": "library",
   "keywords": ["twig", "twig-extension"],
   "license": "MIT",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "authors": [
     {
       "name": "Dennis Morhardt",
