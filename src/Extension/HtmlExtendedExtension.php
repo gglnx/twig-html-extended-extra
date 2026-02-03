@@ -545,7 +545,7 @@ namespace {
     {
         // Get only arrays
         $attributes = array_filter($attributes, function ($value) {
-            return is_array($value) && count($value) > 0;
+            return is_iterable($value) && (!is_countable($value) || count($value) > 0);
         });
 
         // Merge into all attribute arrays into one
