@@ -14,6 +14,7 @@ use Twig\Error\RuntimeError;
 use Twig\Extension\AbstractExtension;
 use Twig\Extra\Html\HtmlExtension;
 use Twig\Markup;
+use Twig\Runtime\EscaperRuntime;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -486,7 +487,7 @@ class HtmlExtendedExtension extends AbstractExtension
 
                 return implode(' ', $attributes);
             } elseif (in_array($name, self::$spaceSeparatedTokenAttributes) && !empty($value)) {
-                $value = trim(twig_html_classes($value));
+                $value = trim(HtmlExtension::htmlClasses($value));
             } elseif ($name === 'style' && !empty($value)) {
                 $value = self::styles($value);
             } else {
@@ -506,7 +507,7 @@ class HtmlExtendedExtension extends AbstractExtension
         }
 
         if ($value !== null) {
-            $value = twig_escape_filter($env, (string) $value);
+            $value = $env->getRuntime(EscaperRuntime::class)->escape((string) $value);
 
             return "{$name}=\"{$value}\"";
         }
@@ -599,7 +600,7 @@ class HtmlExtendedExtension extends AbstractExtension
     {
         // Escape name
         $name = strtolower($name);
-        $name = twig_escape_filter($env, $name, 'html');
+        $name = $env->getRuntime(EscaperRuntime::class)->escape($name, 'html');
 
         // Open tag
         $html = "<{$name}";
@@ -611,7 +612,7 @@ class HtmlExtendedExtension extends AbstractExtension
         }
 
         if (!in_array($name, self::$voidElements)) {
-            $content = twig_escape_filter($env, $content, 'html');
+            $content = $env->getRuntime(EscaperRuntime::class)->escape($content, 'html');
             $html .= ">{$content}</{$name}>";
         } else {
             $html .= ">";
