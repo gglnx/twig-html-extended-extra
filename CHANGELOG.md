@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-05-28
+
+* **Breaking Change**: Drop support for Twig 2.x and PHP < 8.1
+* Deprecation of all `twig_html_extended_*` functions:
+  * `twig_html_extended_attributes_boolean()` -> `HtmlExtendedExtension::getBooleanAttributes()`
+  * `twig_html_extended_attributes_with_space_separated_tokens()` -> `HtmlExtendedExtension::getSpaceSeparatedTokenAttributes()`
+  * `twig_html_extended_styles()` -> `HtmlExtendedExtension::styles()`
+  * `twig_html_extended_attribute()` -> `$env->getExtension(HtmlExtendedExtension::class)->attribute()`
+  * `twig_html_extended_merge_attributes()` -> `HtmlExtendedExtension::mergeAttributes()`
+  * `twig_html_extended_attributes()` -> `$env->getExtension(HtmlExtendedExtension::class)->attributes()`
+  * `twig_html_extended_tag()` -> `$env->getExtension(HtmlExtendedExtension::class)->tag()`
+* Fix: Replacement of deprecated Twig functions
+
 ## [0.6.0] - 2026-02-03
 
 * Allow all iterable types in attributes
@@ -79,6 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adds `strip_control_characters` filter
 
 [Unreleased]: https://github.com/gglnx/twig-html-extended-extra/compare/v0.6.0...HEAD
+[0.7.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.7.0
 [0.6.0]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.6.0
 [0.5.2]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.2
 [0.5.1]: https://github.com/gglnx/twig-html-extended-extra/releases/tag/v0.5.1
