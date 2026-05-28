@@ -2,12 +2,17 @@
 
 [![Packagist](https://img.shields.io/packagist/v/gglnx/twig-html-extended-extra.svg)](https://packagist.org/packages/gglnx/twig-html-extended-extra)
 
-This extension extends the [`twig/html-extra`](https://github.com/twigphp/html-extra) package and can be used as drop-in replacement.
+This extension extends the [`twig/html-extra`](https://github.com/twigphp/html-extra) with additional HTML related Twig functions:
+
+* `html_id('my-prefix')`: Returns a random, but for this request unique prefixed ID
+* `html_attribute('id', 'html-id')`: Renders a HTML attribute, e.g. `id="html-id"`
+* `html_attributes({ id: 'html-id', class: {first: true, second: false}, data: {test: '1'} })`: Renders a map of HTML attributes, result: `id="html-id" class="first" data-test="1"`
+* `html_styles({ 'font-size': '12px', 'font-weight': bold })`: Renders CSS properties and values, result: `font-size: 12px, font-weight: bold`
 
 ## Requirements
 
-* Twig >=2.14 and Twig >=3.0
-* PHP >=7.4
+* Twig >=3.20
+* PHP >=8.1
 
 ## Installation
 
