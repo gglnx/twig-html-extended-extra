@@ -29,6 +29,9 @@
     "sort-packages": true
   },
   "autoload": {
+    "files": [
+      "src/Resources/functions.php"
+    ],
     "psr-4": {
       "Gglnx\\TwigHtmlExtendedExtra\\": "src/"
     }
