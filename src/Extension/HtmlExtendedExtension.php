@@ -246,23 +246,23 @@ class HtmlExtendedExtension extends AbstractExtension
         $text = strip_tags($text);
         $text = trim($text);
         $text = str_replace(["\r\n", "\r"], "\n", $text);
-        $text = preg_replace("~\n\n+~", "\n\n", $text);
+        $text = (string) preg_replace("~\n\n+~", "\n\n", $text);
         $text = '<p>' . implode('</p><p>', array_filter(explode("\n\n", $text))) . '</p>';
-        $text = preg_replace('~<p>\s+</p>~', '', $text);
+        $text = (string) preg_replace('~<p>\s+</p>~', '', $text);
 
         if ($nl2br) {
             $text = str_replace("\n", '<br>', $text);
-            $text = preg_replace('~\s+<(/?(p|br))>~', '<$1>', $text);
-            $text = preg_replace('~<(/?(p|br))>\s+~', '<$1>', $text);
-            $text = preg_replace('~(<br>)+~', '<br>', $text);
+            $text = (string) preg_replace('~\s+<(/?(p|br))>~', '<$1>', $text);
+            $text = (string) preg_replace('~<(/?(p|br))>\s+~', '<$1>', $text);
+            $text = (string) preg_replace('~(<br>)+~', '<br>', $text);
             $text = str_replace(['<p><br>','<br></p>'], ['<p>', '</p>'], $text);
         } else {
-            $text = preg_replace("~\n~", '', $text);
-            $text = preg_replace('~\s+<(/?p)>~', '<$1>', $text);
-            $text = preg_replace('~<(/?p)>\s+~', '<$1>', $text);
+            $text = (string) preg_replace("~\n~", '', $text);
+            $text = (string) preg_replace('~\s+<(/?p)>~', '<$1>', $text);
+            $text = (string) preg_replace('~<(/?p)>\s+~', '<$1>', $text);
         }
 
-        $text = preg_replace('~\s\s+~', ' ', $text);
+        $text = (string) preg_replace('~\s\s+~', ' ', $text);
 
         return new Markup($text, 'UTF-8');
     }
@@ -280,10 +280,10 @@ class HtmlExtendedExtension extends AbstractExtension
     public function breakerize(string $text, bool $stripSlashes = true): Markup
     {
         // Convert || into <br>
-        $text = preg_replace('/(?<!\\\)\|\|/', '<br>', $text);
+        $text = (string) preg_replace('/(?<!\\\)\|\|/', '<br>', $text);
 
         // Convert | into &shy;
-        $text = preg_replace('/(?<!\\\)\|/', '&shy;', $text);
+        $text = (string) preg_replace('/(?<!\\\)\|/', '&shy;', $text);
 
         // Remove slashes
         if ($stripSlashes) {
@@ -336,9 +336,8 @@ class HtmlExtendedExtension extends AbstractExtension
         $controlSequence = preg_quote($controlSequence, '/');
         $regex = "/((?<!\\\){$controlSequence})(.*?)((?<!\\\){$controlSequence})/";
         $replacement = $this->tag($env, $tag, '$2', ['class' => $className]);
-        $text = preg_replace($regex, $replacement, $text);
+        $text = (string) preg_replace($regex, $replacement, $text);
 
-        // Remove slashes
         if ($stripSlashes) {
             $text = stripcslashes($text);
         }
@@ -361,12 +360,12 @@ class HtmlExtendedExtension extends AbstractExtension
         foreach ($controlSequences as $controlSequence) {
             $controlSequence = preg_quote($controlSequence, '/');
             $regex = "/((?<!\\\){$controlSequence})(.*?)((?<!\\\){$controlSequence})/";
-            $text = preg_replace($regex, '$2', $text);
+            $text = (string) preg_replace($regex, '$2', $text);
         }
 
         // Remove soft and hard breaks
-        $text = preg_replace('/(?<!\\\)\|\|/', ' ', $text);
-        $text = preg_replace('/(?<!\\\)\|/', '', $text);
+        $text = (string) preg_replace('/(?<!\\\)\|\|/', ' ', $text);
+        $text = (string) preg_replace('/(?<!\\\)\|/', '', $text);
 
         // Remove slashes
         $text = stripcslashes($text);
@@ -395,7 +394,7 @@ class HtmlExtendedExtension extends AbstractExtension
     ): Markup {
         $text = strip_tags($text);
         $pattern = '/(' . preg_quote($term, '/') . ')/im';
-        $midway = round($length / 2);
+        $midway = (int) round($length / 2);
 
         if (strlen($text) > $length) {
             $strpos = stripos($text, $term);
@@ -440,7 +439,7 @@ class HtmlExtendedExtension extends AbstractExtension
     /**
      * Converts an array into a style attribute value
      *
-     * @param array $properties
+     * @param array<string|int, mixed> $properties
      * @return string|null
      */
     public static function styles(array $properties): ?string
@@ -455,7 +454,9 @@ class HtmlExtendedExtension extends AbstractExtension
 
         $style = [];
         foreach ($properties as $property => $value) {
-            $style[] = "$property: $value;";
+            if (is_string($property) && is_string($value) && !empty($value)) {
+                $style[] = "$property: $value;";
+            }
         }
 
         return implode(' ', $style);
@@ -470,7 +471,7 @@ class HtmlExtendedExtension extends AbstractExtension
      * @param bool $isRoot
      * @return string
      */
-    public function attribute(Environment $env, $name, $value, $isRoot = false): string
+    public function attribute(Environment $env, string $name, mixed $value, bool $isRoot = false): string
     {
         // Convert value into a string
         if (is_array($value)) {
@@ -506,8 +507,8 @@ class HtmlExtendedExtension extends AbstractExtension
             return $value ? $name : '';
         }
 
-        if ($value !== null) {
-            $value = $env->getRuntime(EscaperRuntime::class)->escape((string) $value);
+        if (is_string($value) || is_numeric($value) || $value instanceof Markup) {
+            $value = $env->getRuntime(EscaperRuntime::class)->escape($value);
 
             return "{$name}=\"{$value}\"";
         }
@@ -518,10 +519,10 @@ class HtmlExtendedExtension extends AbstractExtension
     /**
      * Merges two or more arrays with attributes recursively into one
      *
-     * @param array $arrays
-     * @return array
+     * @param array<int|string, mixed> $arrays
+     * @return array<int|string, mixed>
      */
-    public static function mergeAttributes(...$arrays): array
+    public static function mergeAttributes(array ...$arrays): array
     {
         $attributes = [];
 
@@ -565,15 +566,18 @@ class HtmlExtendedExtension extends AbstractExtension
      * of `class` of two ore more attribute arrays will be merged into one.
      *
      * @param Environment $env
-     * @param array[][] $attributes
+     * @param mixed $attributes
      * @return string
      */
-    public function attributes(Environment $env, ...$attributes): string
+    public function attributes(Environment $env, mixed ...$attributes): string
     {
-        // Get only arrays
-        $attributes = array_filter($attributes, function ($value) {
-            return is_iterable($value) && (!is_countable($value) || count($value) > 0);
-        });
+        /** @var list<array<string|int, mixed>> */
+        $attributes = array_filter(
+            $attributes,
+            static fn (mixed $value): bool =>
+                is_iterable($value) &&
+                (!is_countable($value) || count($value) > 0),
+        );
 
         // Merge into all attribute arrays into one
         $attributes = self::mergeAttributes(...$attributes);
@@ -581,7 +585,7 @@ class HtmlExtendedExtension extends AbstractExtension
         // Render attributes as HTML
         $html = [];
         foreach ($attributes as $name => $value) {
-            $html[] = $this->attribute($env, $name, $value, true);
+            $html[] = $this->attribute($env, (string) $name, $value, true);
         }
 
         return trim(implode(' ', $html));
@@ -593,7 +597,7 @@ class HtmlExtendedExtension extends AbstractExtension
      * @param Environment $env Current Twig environment
      * @param string $name Tag name
      * @param string $content Tag content
-     * @param array $attributes Tag attributes
+     * @param array<string, mixed> $attributes Tag attributes
      * @return string
      */
     public function tag(Environment $env, string $name, string $content = '', array $attributes = []): string

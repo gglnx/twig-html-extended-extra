@@ -39,7 +39,7 @@ function twig_html_extended_attributes_with_space_separated_tokens(): array
 /**
  * Converts an array into a style attribute value
  *
- * @param array $properties
+ * @param array<int|string, mixed> $properties
  * @return string|null
  */
 function twig_html_extended_styles(array $properties): ?string
@@ -68,14 +68,14 @@ function twig_html_extended_attribute(Environment $env, $name, $value, $isRoot =
 /**
  * Merges two or more arrays with attributes recursively into one
  *
- * @param array $arrays
- * @return array
+ * @param array<int|string, mixed> $arrays
+ * @return array<int|string, mixed>
  */
 function twig_html_extended_merge_attributes(...$arrays)
 {
     trigger_deprecation('gglnx/twig-html-extended-extra', '0.7', 'Using the internal "%s" function is deprecated.', __FUNCTION__);
 
-    return HtmlExtendedExtension::mergeAttributes($arrays);
+    return HtmlExtendedExtension::mergeAttributes(...$arrays);
 }
 
 /**
@@ -83,14 +83,14 @@ function twig_html_extended_merge_attributes(...$arrays)
  * of `class` of two ore more attribute arrays will be merged into one.
  *
  * @param Environment $env
- * @param array[][] $attributes
+ * @param mixed $attributes
  * @return string
  */
 function twig_html_extended_attributes(Environment $env, ...$attributes): string
 {
     trigger_deprecation('gglnx/twig-html-extended-extra', '0.7', 'Using the internal "%s" function is deprecated.', __FUNCTION__);
 
-    return $env->getExtension(HtmlExtendedExtension::class)->attributes($env, $attributes);
+    return $env->getExtension(HtmlExtendedExtension::class)->attributes($env, ...$attributes);
 }
 
 /**
@@ -99,7 +99,7 @@ function twig_html_extended_attributes(Environment $env, ...$attributes): string
  * @param Environment $env Current Twig environment
  * @param string $name Tag name
  * @param string $content Tag content
- * @param array $attributes Tag attributes
+ * @param array<string, mixed> $attributes Tag attributes
  * @return string
  */
 function twig_html_extended_tag(Environment $env, string $name, string $content = '', array $attributes = [])
